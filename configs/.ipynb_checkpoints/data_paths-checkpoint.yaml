@@ -1,0 +1,2 @@
+path_to_pan_cancer_hdf5_files : "/tempory/transcriptomic_data/pan_cancer"
+path_to_treemap_images : "/tempory/transcriptomic_data/images"

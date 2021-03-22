@@ -1,0 +1,6 @@
+epochs : 50
+batch_size_pt : 8
+lr_pt : 0.001
+batch_size_ft : 8
+lr_ft : 0.001
+no_tensorboard : True
