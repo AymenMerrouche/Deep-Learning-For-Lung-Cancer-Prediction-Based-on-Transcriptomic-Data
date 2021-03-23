@@ -10,7 +10,7 @@
 ![](./ML_for_Medicine_Project_Presentation/ML_for_Medicine_Project_Presentation1024_7.jpg )
 ![](./ML_for_Medicine_Project_Presentation/ML_for_Medicine_Project_Presentation1024_8.jpg )
 
-![](./ML_for_Medicine_Project_Presentation/ML_for_Medicine_Project_Presentation1024_8.jpg )
+![](./ML_for_Medicine_Project_Presentation/ML_for_Medicine_Project_Presentation1024_9.jpg )
 ![](./ML_for_Medicine_Project_Presentation/ML_for_Medicine_Project_Presentation1024_10.jpg )
 ![](./ML_for_Medicine_Project_Presentation/ML_for_Medicine_Project_Presentation1024_11.jpg )
 ![](./ML_for_Medicine_Project_Presentation/ML_for_Medicine_Project_Presentation1024_12.jpg )
