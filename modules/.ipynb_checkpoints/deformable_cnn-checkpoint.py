@@ -6,7 +6,7 @@ from torch.nn import functional as F
 
 import numpy as np
 from modules.deform_conv import th_batch_map_offsets, th_generate_grid
-
+import copy
 
 class ConvOffset2D(nn.Conv2d):
     """ConvOffset2D
@@ -85,48 +85,6 @@ class ConvOffset2D(nn.Conv2d):
         x = x.contiguous().view(-1, int(x_shape[1]), int(x_shape[2]), int(x_shape[3]))
         return x
     
-    
-    
-class ConvNet(nn.Module):
-    def __init__(self):
-        super(ConvNet, self).__init__()
-
-        # conv11
-        self.conv11 = nn.Conv2d(1, 12, 3, padding=1)
-        self.bn11 = nn.BatchNorm2d(32)
-
-        # conv12
-        self.conv12 = nn.Conv2d(32, 64, 3, padding=1, stride=2)
-        self.bn12 = nn.BatchNorm2d(64)
-
-        # conv21
-        self.conv21 = nn.Conv2d(64, 128, 3, padding= 1)
-        self.bn21 = nn.BatchNorm2d(128)
-
-        # conv22
-        self.conv22 = nn.Conv2d(128, 128, 3, padding=1, stride=2)
-        self.bn22 = nn.BatchNorm2d(128)
-
-        # out
-        self.fc = nn.Linear(128, 10)
-
-    def forward(self, x):
-        x = F.relu(self.conv11(x))
-        x = self.bn11(x)
-
-        x = F.relu(self.conv12(x))
-        x = self.bn12(x)
-
-        x = F.relu(self.conv21(x))
-        x = self.bn21(x)
-
-        x = F.relu(self.conv22(x))
-        x = self.bn22(x)
-
-        x = F.avg_pool2d(x, kernel_size=[x.size(2), x.size(3)])
-        x = self.fc(x.view(x.size()[:2]))#
-        x = F.softmax(x)
-        return x
 
 class DeformConvNet(nn.Module):
     def __init__(self):
@@ -191,8 +149,9 @@ class DeformConvNet(nn.Module):
 def get_cnn():
     return ConvNet()
 
-def get_deform_cnn(trainable=True, freeze_filter=[nn.Conv2d, nn.Linear]):
-    model = DeformConvNet()
-    if not trainable:
+def get_deform_cnn_fine_tune(pretrained_model, freeze_cnn=True, freeze_filter=[nn.Conv2d]):
+    model = copy.deepcopy(pretrained_model)
+    if freeze_cnn:
         model.freeze(freeze_filter)
+    model.fc = nn.Linear(12, 2)
     return model

@@ -1,4 +1,4 @@
-epochs : 50
+epochs : 25
 batch_size_pt : 128
 lr_pt : 0.001
 batch_size_ft : 128

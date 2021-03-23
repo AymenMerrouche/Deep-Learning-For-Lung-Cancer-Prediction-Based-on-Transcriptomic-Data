@@ -3,6 +3,7 @@ from torch.utils.tensorboard import SummaryWriter
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import classification_report
 from sklearn import metrics
+from sklearn.metrics import roc_auc_score
 
 
 
@@ -75,6 +76,7 @@ def fit(checkpoint, criterion ,train_loader, val_loader, epochs, clip=float('inf
         mean_loss = 0.
         predictions_stacked = []
         lebels_stacked = []
+        outputs_stacked = []
         with torch.no_grad():
             for batch in loader:
                 images, labels = batch
@@ -90,16 +92,16 @@ def fit(checkpoint, criterion ,train_loader, val_loader, epochs, clip=float('inf
                 correct += acc.item()
                 preds = output.argmax(dim=1, keepdim=True)
                 predictions_stacked.append(preds)
+                outputs_stacked.append(output[:,1])
                 lebels_stacked.append(labels)
                 
         pred = torch.cat(predictions_stacked, 0).cpu().numpy()
         target = torch.cat(lebels_stacked, 0).cpu().numpy()
+        probs = torch.cat(outputs_stacked, 0).cpu().numpy()
         target_names = ['No Cancer', 'Cancer']
         clf_report  = classification_report(target, pred, target_names=target_names)
         # auc
-        fpr, tpr, thresholds = metrics.roc_curve(target, pred, pos_label=1)
-        auc = metrics.auc(fpr, tpr)
-                
+        auc = roc_auc_score(target, probs)
         return mean_loss / len(loader), correct / len(loader), auc, clf_report
 
     begin_epoch = checkpoint.epoch
